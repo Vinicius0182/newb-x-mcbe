@@ -29,18 +29,18 @@
 
 /* Color correction */
 #define NL_TONEMAP_TYPE 4              // 1:Exponential, 2:Reinhard, 3:Extended Reinhard, 4:ACES
-#define NL_GAMMA 1.25                   // 0.3 low ~ 2.0 high
-#define NL_EXPOSURE 1.35             // [toggle] 0.5 dark ~ 3.0 bright
-#define NL_SATURATION 1.10             // [toggle] 0.0 grayscale ~ 4.0 super saturated
+#define NL_GAMMA 1.18                   // 0.3 low ~ 2.0 high
+#define NL_EXPOSURE 1.65             // [toggle] 0.5 dark ~ 3.0 bright
+#define NL_SATURATION 1.18             // [toggle] 0.0 grayscale ~ 4.0 super saturated
 //#define NL_TINT                      // [toggle] enable light/dark tone tinting
 #define NL_TINT_LOW  vec3(0.3,0.5,1.4) // color tint for dark tone
 #define NL_TINT_HIGH vec3(1.4,0.7,0.3) // color tint for light tone
 
 /* Lighting */
-#define NL_SUNLIGHT_INTENSITY   4.8  // 1.0 weak ~ 5.0 bright
+#define NL_SUNLIGHT_INTENSITY   5.0  // 1.0 weak ~ 5.0 bright
 #define NL_TORCHLIGHT_INTENSITY 1.0  // 0.5 weak ~ 3.0 bright
 #define NL_SHADOW_INTENSITY     0.99 // 0.0 no shadow ~ 1.0 strong shadow
-#define NL_MIN_LIGHTING_BOOST   0.65  // 1.0 minimal lighting boost for dark areas ~ 3.0 brighter dark areas
+#define NL_MIN_LIGHTING_BOOST   0.45  // 1.0 minimal lighting boost for dark areas ~ 3.0 brighter dark areas
 //#define NL_BLINKING_TORCH  // [toggle] flickering light
 #define NL_CLOUD_SHADOW      // [toggle] cloud shadow (simple clouds only)
 
@@ -61,9 +61,9 @@
 
 /* Fog */
 #define NL_FOG 1.0                // [toggle] 0.1 subtle ~ 1.0 blend with sky completely
-#define NL_MIST_DENSITY 0.52      // 0.0 no mist ~ 1.0 misty
-#define NL_RAIN_MIST_OPACITY 0.32 // [toggle] 0.04 very subtle ~ 0.5 thick rain mist blow
-#define NL_CLOUDY_FOG 0.58         // [toggle] 0.0 subtle - 0.8 dense fog clouds
+#define NL_MIST_DENSITY 0.18      // 0.0 no mist ~ 1.0 misty
+#define NL_RAIN_MIST_OPACITY 0.38 // [toggle] 0.04 very subtle ~ 0.5 thick rain mist blow
+#define NL_CLOUDY_FOG 0.18         // [toggle] 0.0 subtle - 0.8 dense fog clouds
 
 /* Sky */
 #define NL_SKY_VOID_FACTOR     0.5
@@ -122,7 +122,7 @@
 #define NL_UNDERWATER_TINT vec3(0.9,1.0,0.9) // fog tint color when underwater
 
 /* Cloud type */
-#define NL_CLOUD_TYPE 3 // 0:vanilla, 1:soft, 2:rounded, 3:realistic
+#define NL_CLOUD_TYPE 1 // 0:vanilla, 1:soft, 2:rounded, 3:realistic; soft clouds enable the existing cloud-shadow path
 
 /* Vanilla cloud settings - make sure to remove clouds.png when using this */
 #define NL_CLOUD0_THICKNESS 2.1      // 0.5 slim ~ 8.0 fat
@@ -133,9 +133,9 @@
 /* Soft cloud settings */
 #define NL_CLOUD1_SCALE vec2(0.016, 0.022) // 0.003 large ~ 0.2 tiny
 #define NL_CLOUD1_DEPTH 1.3                // 0.0 no bump ~ 10.0 large bumps
-#define NL_CLOUD1_SPEED 0.04               // 0.0 static ~ 0.4 fast moving
-#define NL_CLOUD1_DENSITY 0.62             // 0.1 less clouds ~ 0.8 more clouds
-#define NL_CLOUD1_OPACITY 0.96              // 0.0 invisible ~ 1.0 opaque
+#define NL_CLOUD1_SPEED 0.012               // 0.0 static ~ 0.4 fast moving
+#define NL_CLOUD1_DENSITY 0.76             // 0.1 less clouds ~ 0.8 more clouds
+#define NL_CLOUD1_OPACITY 0.98              // 0.0 invisible ~ 1.0 opaque
 
 /* Rounded cloud settings */
 #define NL_CLOUD2_THICKNESS 2.1            // 0.5 slim ~ 5.0 fat
@@ -186,7 +186,7 @@
 //#define NL_CHUNK_LOAD_ANIM 100.0 // [toggle] -600.0 fall from top ~ 600.0 rise from bottom
 
 /* Sun/Moon */
-#define NL_SUN_SIZE  2.2           // 0.3 tiny ~ 4.0 massive
+#define NL_SUN_SIZE  3.2           // 0.3 tiny ~ 4.0 massive
 #define NL_MOON_SIZE 1.0           // 0.3 tiny ~ 4.0 massive
 #define NL_SUN_PATH_YAW    15.0 //
 #define NL_MOON_PATH_YAW   17.0 //
@@ -196,17 +196,17 @@
 #define NL_MOON_TILT       45.0 // 0.0 no tilt ~ 90.0 tilt of 90 degrees
 
 /* Fake godrays during sunrise/sunset */
-#define NL_GODRAY 0.72// [toggle] 0.1 subtle ~ 0.8 strong
+#define NL_GODRAY 0.80// [toggle] 0.1 subtle ~ 0.8 strong
 
 /* Sky/Water extras (etapa 2) */
-#define NL_SUN_HALO 0.38          // [toggle] 0.03 subtle ~ 0.4 strong halo around sun/moon
-#define NL_WATER_SUN_GLINT 2.2    // [toggle] 0.5 subtle ~ 4.0 strong sun sparkle on water
+#define NL_SUN_HALO 0.40          // [toggle] 0.03 subtle ~ 0.4 strong halo around sun/moon
+#define NL_WATER_SUN_GLINT 3.8    // [toggle] 0.5 subtle ~ 4.0 strong sun sparkle on water
 
 /* Wind gusts (etapa 3) */
 #define NL_WIND_GUSTS 0.8         // [toggle] 0.3 subtle ~ 1.5 strong gusts
 
 /* Sky reflection */
-#define NL_GROUND_REFL 0.5      // [toggle] 0.2 slightly reflective ~ 1.0 fully reflect sky
+#define NL_GROUND_REFL 0.85      // [toggle] 0.2 slightly reflective ~ 1.0 fully reflect sky
 #define NL_GROUND_RAIN_WETNESS 1.0 // 0.0 no wetness ~ 1.0 fully wet blocks when raining
 #define NL_GROUND_RAIN_PUDDLES 1.0 // 0.0 no puddles ~ 1.0 puddles
 
@@ -256,18 +256,20 @@
 #endif
 
 #ifdef ULTRA
-  #define REALISTIC_CLOUDS
+  // Realistic volumetric clouds disable the existing cloud-shadow path in this source.
+  // Keep soft clouds in this profile so the source-supported moving cloud shadows can work.
+  #undef REALISTIC_CLOUDS
   #undef NL_WIND_GUSTS
   #define NL_WIND_GUSTS 1.2
   #undef NL_SUN_HALO
-  #define NL_SUN_HALO 0.2
+  #define NL_SUN_HALO 0.40
   #undef NL_WATER_SUN_GLINT
-  #define NL_WATER_SUN_GLINT 2.5
+  #define NL_WATER_SUN_GLINT 3.8
   #define NL_CLOUD_AURORA_REFLECTION
   #undef NL_GODRAY
-  #define NL_GODRAY 0.35
+  #define NL_GODRAY 0.80
   #undef NL_GROUND_REFL
-  #define NL_GROUND_REFL 0.6
+  #define NL_GROUND_REFL 0.85
 #endif
 
 #ifdef NO_WAVE_NO_FOG
@@ -306,7 +308,7 @@
 #ifdef REALISTIC_CLOUDS
   #undef NL_CLOUD_TYPE
   #define NL_CLOUD_TYPE 3
-  #undef NL_CLOUD_SHADOW
+  #undef NL_CLOUD_SHADOW // this source does not implement cloud shadows for realistic clouds
 #endif
 
 #endif
