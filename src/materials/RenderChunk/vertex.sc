@@ -121,6 +121,20 @@ void main() {
     fogColor.a = mix(fogColor.a, 1.0, min(NL_GODRAY*nlRenderGodRayIntensity(cPos, worldPos, t, uv1, relativeDist, FogColor.rgb), 1.0));
   #endif
 
+  #if defined(NL_HFOG) && defined(NL_FOG)
+    if (!(env.nether || env.end || env.underwater)) {
+      float hfog = nlRenderHeightFog(gPos.y, relativeDist);
+      fogColor.a += (1.0-fogColor.a)*hfog;
+      #ifdef NL_SUN_SCATTER
+        float sunAmt = max(dot(-viewDir, env.sunDir), 0.0);
+        sunAmt *= sunAmt;
+        sunAmt *= sunAmt;
+        sunAmt *= sunAmt;
+        fogColor.rgb += (NL_SUN_SCATTER*sunAmt*hfog*(1.0-env.rainFactor)*step(0.0, env.dayFactor))*sunLightTint(env.dayFactor, env.rainFactor);
+      #endif
+    }
+  #endif
+
   if (env.nether) {
     // blend fog with void color
     fogColor.rgb = colorCorrectionInv(FogColor.rgb);
