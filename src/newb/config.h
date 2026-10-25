@@ -44,6 +44,15 @@
 //#define NL_BLINKING_TORCH  // [toggle] flickering light
 #define NL_CLOUD_SHADOW      // [toggle] cloud shadow (simple clouds only)
 
+/* Sun shadows (approximation: uses vanilla sky-light level, there is no shadow map in RenderDragon) */
+// Sky light 15 = open sky, 14 = under one leaf/overhang. Values between LOW and HIGH blend lit->shadow.
+// HIGH close to 1.0 makes shadow cover everything under leaves/roofs (bigger shadows)
+#define NL_SHADOW_SKY_LOW  0.935
+#define NL_SHADOW_SKY_HIGH 0.995
+#define NL_SUN_DIRECTIONAL                  // [toggle] per-pixel sun-facing / sun-away shading
+#define NL_SUN_FACE_COL    vec3(1.22,1.08,0.84) // warm light on faces toward the sun
+#define NL_SHADE_AWAY_COL  vec3(0.66,0.76,0.95) // cooler, darker faces away from the sun
+
 /* Ambient light for nether/end */
 #define NL_NETHER_AMBIENT vec3(3.0,2.16,1.89)
 #define NL_END_AMBIENT    vec3(1.98,1.25,2.3)
@@ -240,6 +249,20 @@
   #undef NL_RAIN_MIST_OPACITY
   #undef NL_CLOUDY_FOG
   #undef NL_ENTITY_EDGE_HIGHLIGHT
+#endif
+
+#ifdef CINEMATIC_LITE
+  #undef NL_SHADOW_INTENSITY
+  #define NL_SHADOW_INTENSITY 0.97
+  #undef NL_SUN_FACE_COL
+  #define NL_SUN_FACE_COL   vec3(1.30,1.10,0.80)
+  #undef NL_SHADE_AWAY_COL
+  #define NL_SHADE_AWAY_COL vec3(0.55,0.68,0.92)
+  #undef NL_SHADOW_SKY_HIGH
+  #define NL_SHADOW_SKY_HIGH 0.999
+  #define NO_WAVE
+  #undef NL_RAIN_MIST_OPACITY
+  #undef NL_CLOUDY_FOG
 #endif
 
 #ifdef NO_WAVE_NO_FOG
