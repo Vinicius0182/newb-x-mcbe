@@ -1,15 +1,15 @@
-name = "Real Full"
+name = "Vivid Revolution"
 version = [0, 16, 56]
 min_supported_mc_version = [1, 26, 50]
 description = '''
 §c%w
-§7- Realistic and light shader (based on Newb X)
+§7- Vivid Revolution: céu, luz e névoa estilo Vibrant Visuals no RenderDragon
 %v
 §3https://newb-shader.devendrn.com/
 ''' # %w = patch warning, %v = version
-authors = ["devendrn"]
+authors = ["devendrn (Newb X base)"]
 url = "https://newb-shader.devendrn.com/"
-uuid = "8585daea-e6c6-40a9-b32b-e02203116929" # Use https://www.uuidgenerator.net/version4
+uuid = "251146c3-6086-45fe-9971-18c79e047c3e" # Use https://www.uuidgenerator.net/version4
 materials = ["Actor", "ActorGlint", "ActorMultiTexture", "Clouds", "EndSky", "ItemInHandColor", "ItemInHandColorGlint", "ItemInHandTextured", "RenderChunk","Sky", "Stars", "SunMoon", "Weather"]
 
 [info] 
@@ -25,25 +25,10 @@ Contact (Discord Server): https://discord.gg/newb-community-844591537430069279
 credits = '''
 '''
 
-# subpacks are arranged in left to right order
-# right-most subpack is enabled by default
-[[subpack]]
-define = "ULTRA"
-materials = ["Clouds", "RenderChunk", "Sky"]
-description = '''
-Ultra (nuvens realistas, mais efeitos)
-'''
-
-[[subpack]]
-define = "LITE"
-materials = ["Sky", "RenderChunk", "Actor", "ActorGlint", "EndSky", "Clouds", "SunMoon", "Weather", "ItemInHandTextured", "ItemInHandColor", "ItemInHandColorGlint", "Stars"]
-description = '''
-Lite (leve, para aparelhos fracos)
-'''
-
+# single mode only
 [[subpack]]
 define = "DEFAULT"
 materials = []
 description = '''
-Equilibrado
+Default
 '''

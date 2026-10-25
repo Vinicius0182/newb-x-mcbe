@@ -18,6 +18,21 @@ vec3 sunLightTint(float dayFactor, float rain) {
   return tint;
 }
 
+// sun leaking through tree canopy (per-pixel): soft moving-with-the-sun patches
+float nlLeafDapple(highp vec3 gp, vec2 sunXZ) {
+  highp vec2 p = gp.xz*NL_DAPPLE_SCALE + vec2(gp.y*0.9, -gp.y*0.6) + sunXZ*6.0;
+  highp vec2 p0 = floor(p);
+  vec2 u = p-p0;
+  u *= u*(3.0-2.0*u);
+  float n1 = mix(mix(rand(p0), rand(p0+vec2(1.0,0.0)), u.x), mix(rand(p0+vec2(0.0,1.0)), rand(p0+vec2(1.0,1.0)), u.x), u.y);
+  highp vec2 q = p*2.17 + vec2(11.3, 5.7);
+  highp vec2 q0 = floor(q);
+  vec2 w = q-q0;
+  w *= w*(3.0-2.0*w);
+  float n2 = mix(mix(rand(q0), rand(q0+vec2(1.0,0.0)), w.x), mix(rand(q0+vec2(0.0,1.0)), rand(q0+vec2(1.0,1.0)), w.x), w.y);
+  return 0.65*n1 + 0.35*n2;
+}
+
 vec3 nlLighting(
   sampler2D tex, nl_skycolor skycol, nl_environment env, vec3 wPos, out vec3 torchColor, vec3 COLOR,
   vec2 uv1, vec2 lit, bool isTree, float shade, highp float t, float renderdistance, float TIME_OF_DAY, vec3 CAMERA_POS
@@ -67,9 +82,10 @@ vec3 nlLighting(
     sunLightAttenuation *= 1.0-0.4*env.rainFactor;
 
     // shadow cast by sun light
-    float shadow = step(0.93, uv1.y);
+    float shadow = smoothstep(NL_SHADOW_SKY_LOW, NL_SHADOW_SKY_HIGH, uv1.y);
     shadow = max(shadow, (1.0 - NL_SHADOW_INTENSITY + (0.6*NL_SHADOW_INTENSITY*nightIntensity))*lit.y);
-    shadow *= shade > 0.8 ? 1.0 : 0.8;
+    // Stronger local contrast while retaining detail in shaded surfaces.
+    shadow *= shade > 0.8 ? 1.0 : 0.72;
     #if defined(NL_CLOUD_SHADOW) && (NL_CLOUD_TYPE == 1 || NL_CLOUD_TYPE == 2)
       vec3 mainLightDir = env.sunDir.y > 0.0 ? env.sunDir : env.moonDir;
       vec3 gPos = wPos + CAMERA_POS;
@@ -87,15 +103,16 @@ vec3 nlLighting(
         projectedPos = NL_CLOUD2_SCALE * (projectedPos + vec2(1.0, 0.5) * (t * NL_CLOUD2_VELOCITY));
         cmask = cloudDf(vec3(projectedPos.x, 0.5, projectedPos.y), env.rainFactor, NL_CLOUD2_SHAPE)*cloudFade;
       #endif
-      shadow *= 0.3 + 0.7*smoothstep(0.6, 0.0, cmask);
+      shadow *= (1.0-NL_CLOUD_SHADOW_STRENGTH) + NL_CLOUD_SHADOW_STRENGTH*smoothstep(0.6, 0.0, cmask);
     #endif
 
     // direct light from top
     light = (NL_SUNLIGHT_INTENSITY*shadow*sunLightAttenuation)*sunLightTint(env.dayFactor, env.rainFactor);
 
-    // sky ambient
+    // sky ambient (reduced in daytime so shadows stay dark)
+    float ambScale = mix(1.0, NL_SHADOW_AMBIENT, smoothstep(0.0, 0.4, env.dayFactor)*(1.0-env.rainFactor));
     lum = luminance(light);
-    light += (skycol.horizon + skycol.zenith)*(uv1.y/(1.0+lum));
+    light += (skycol.horizon + skycol.zenith)*(ambScale*uv1.y/(1.0+lum));
 
   }
 
