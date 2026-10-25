@@ -29,8 +29,8 @@
 
 /* Color correction */
 #define NL_TONEMAP_TYPE 3              // 1:Exponential, 2:Reinhard, 3:Extended Reinhard, 4:ACES
-#define NL_GAMMA 1.05                  // warm cinematic contrast
-#define NL_EXPOSURE 2.1               // moderate sunlight lift
+#define NL_GAMMA 1.05                  // lower = brighter midtones
+#define NL_EXPOSURE 2.1               // strong sunlight lift
 #define NL_SATURATION 0.95 // vivid but not neon (VV pack midtones ~1.1)
 //#define NL_TINT                      // [toggle] enable light/dark tone tinting
 #define NL_TINT_LOW  vec3(0.3,0.5,1.4) // color tint for dark tone
@@ -39,6 +39,9 @@
 /* Grading ported from the VV pack (contrast S-curve, highlights slightly desaturated) */
 //#define NL_CONTRAST 0.10        // 0.0 off ~ 0.6 strong S-curve contrast
 //#define NL_HIGHLIGHT_DESAT 0.12 // 0.0 off ~ 0.4 desaturate bright areas
+
+/* Weather mood */
+#define NL_NO_RAIN_MOOD // [toggle] always sunny look. Put // in front to get the gray rainy look back while it rains
 
 /* Lighting */
 #define NL_SUNLIGHT_INTENSITY   8.5 // stronger direct sunlight
@@ -130,7 +133,7 @@
 #define NL_LANTERN_WAVE 0.16   // [toggle] 0.05 subtle ~ 0.4 large swing
 #define NL_WAVE_SPEED 2.8      // 0.5 slow wave ~ 5.0 very fast wave
 //#define NL_EXTRA_PLANTS_WAVE // [toggle] !dont use! wave using texture coords (1.21.0 vanilla 2048x1024)
-#define NL_WAVE_RANGE 13.0     // 6.0 upto 6 blocks ~ 32.0 upto 32 blocks away (slower)
+#define NL_WAVE_RANGE 24.0     // 6.0 upto 6 blocks ~ 32.0 upto 32 blocks away (slower)
 
 /* Water */
 #define NL_WATER_TRANSPARENCY 0.9 // 0.0 transparent ~ 1.0 normal
@@ -162,7 +165,7 @@
 
 /* Soft cloud settings */
 #define NL_CLOUD1_SCALE vec2(0.016, 0.022) // 0.003 large ~ 0.2 tiny
-#define NL_CLOUD1_DEPTH 1.3                // 0.0 no bump ~ 10.0 large bumps
+#define NL_CLOUD1_DEPTH 2.4                // 0.0 no bump ~ 10.0 large bumps
 #define NL_CLOUD1_SPEED 0.04               // 0.0 static ~ 0.4 fast moving
 #define NL_CLOUD1_DENSITY 0.54             // 0.1 less clouds ~ 0.8 more clouds
 #define NL_CLOUD1_OPACITY 0.7              // 0.0 invisible ~ 1.0 opaque
@@ -216,7 +219,7 @@
 //#define NL_CHUNK_LOAD_ANIM 100.0 // [toggle] -600.0 fall from top ~ 600.0 rise from bottom
 
 /* Sun/Moon */
-#define NL_SUN_SIZE  1.0           // 0.3 tiny ~ 4.0 massive
+#define NL_SUN_SIZE  1.3           // 0.3 tiny ~ 4.0 massive
 #define NL_MOON_SIZE 1.0           // 0.3 tiny ~ 4.0 massive
 #define NL_SUN_PATH_YAW    15.0 //
 #define NL_MOON_PATH_YAW   17.0 //
@@ -226,7 +229,7 @@
 #define NL_MOON_TILT       45.0 // 0.0 no tilt ~ 90.0 tilt of 90 degrees
 
 /* Fake godrays during sunrise/sunset */
-#define NL_GODRAY 0.35 // [toggle] 0.1 subtle ~ 0.8 strong
+#define NL_GODRAY 0.55 // [toggle] 0.1 subtle ~ 0.8 strong
 
 /* Sky reflection */
 //#define NL_GROUND_REFL 0.4       // [toggle] 0.2 slightly reflective ~ 1.0 fully reflect sky

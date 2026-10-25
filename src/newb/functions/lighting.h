@@ -18,6 +18,7 @@ vec3 sunLightTint(float dayFactor, float rain) {
   return tint;
 }
 
+#ifdef NL_CANOPY_DAPPLE
 // sun leaking through tree canopy (per-pixel): soft moving-with-the-sun patches
 float nlLeafDapple(highp vec3 gp, vec2 sunXZ) {
   highp vec2 p = gp.xz*NL_DAPPLE_SCALE + vec2(gp.y*0.9, -gp.y*0.6) + sunXZ*6.0;
@@ -32,6 +33,7 @@ float nlLeafDapple(highp vec3 gp, vec2 sunXZ) {
   float n2 = mix(mix(rand(q0), rand(q0+vec2(1.0,0.0)), w.x), mix(rand(q0+vec2(0.0,1.0)), rand(q0+vec2(1.0,1.0)), w.x), w.y);
   return 0.65*n1 + 0.35*n2;
 }
+#endif
 
 vec3 nlLighting(
   sampler2D tex, nl_skycolor skycol, nl_environment env, vec3 wPos, out vec3 torchColor, vec3 COLOR,
@@ -79,7 +81,7 @@ vec3 nlLighting(
 
     float sunLightAttenuation = clamp(0.5*(((2.0*step(TIME_OF_DAY, 0.5)-1.0)*(wPos.x*cos(NL_SUN_PATH_YAW)+wPos.y*sin(NL_SUN_PATH_YAW))/renderdistance) + 1.0), 0.0, 1.0);
     sunLightAttenuation = mix(1.0, sunLightAttenuation*sunLightAttenuation, dawnFactor);
-    sunLightAttenuation *= 1.0-0.4*env.rainFactor;
+    sunLightAttenuation *= 1.0-0.7*env.rainFactor;
 
     // shadow cast by sun light
     float shadow = smoothstep(NL_SHADOW_SKY_LOW, NL_SHADOW_SKY_HIGH, uv1.y);
@@ -179,7 +181,7 @@ vec3 nlEntityLighting(nl_skycolor skycol, nl_environment env, vec3 pos, vec4 nor
 
     float sunLightAttenuation = clamp(0.5*(((2.0*step(TIME_OF_DAY, 0.5)-1.0)*(wPos.x*cos(NL_SUN_PATH_YAW)+wPos.y*sin(NL_SUN_PATH_YAW))/renderdistance) + 1.0), 0.0, 1.0);
     sunLightAttenuation = mix(1.0, sunLightAttenuation*sunLightAttenuation, dawnFactor);
-    sunLightAttenuation *= 1.0-0.5*env.rainFactor;
+    sunLightAttenuation *= 1.0-0.7*env.rainFactor;
 
     // direct light from top
     light = (NL_SUNLIGHT_INTENSITY*l*sunLightAttenuation)*sunLightTint(env.dayFactor, env.rainFactor);

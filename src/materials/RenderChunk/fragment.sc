@@ -3,7 +3,9 @@ $input v_color0, v_color1, v_fog, v_refl, v_texcoord0, v_lightmapUV, v_extra, v_
 #include <bgfx_shader.sh>
 #include <newb/main.sh>
 
+#ifdef NL_CANOPY_DAPPLE
 uniform vec4 CameraPosition;
+#endif
 
 SAMPLER2D_AUTOREG(s_MatTexture);
 SAMPLER2D_AUTOREG(s_SeasonsTexture);
