@@ -94,6 +94,8 @@ vec3 nlLighting(
       vec2 projectedPos = gPos.xz + projectionOffset;
       float cloudFade = smoothstep(1.0, 0.5, length(0.002*(wPos.xz + projectionOffset)));
       cloudFade *= (1.0-dawnFactor*dawnFactor)*clamp(-0.12*(cloudRelativeHeight-7.0), 0.0, 1.0);
+      // low sun stretches the projection into long streaks: fade cloud shadows out until the sun is high
+      cloudFade *= smoothstep(0.3, 0.6, mainLightDir.y);
       float cmask;
       #if NL_CLOUD_TYPE == 1
         // shadow cast by simple clouds
