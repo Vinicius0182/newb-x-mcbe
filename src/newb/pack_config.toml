@@ -84,6 +84,13 @@ No wave effects
 #'''
 
 [[subpack]]
+define = "CINEMATIC_LITE"
+materials = ["RenderChunk"]
+description = '''
+Cinematic Lite (stronger shadows)
+'''
+
+[[subpack]]
 define = "DEFAULT"
 materials = []
 description = '''
