@@ -70,7 +70,7 @@ vec3 nlLighting(
     float shadow = step(0.93, uv1.y);
     shadow = max(shadow, (1.0 - NL_SHADOW_INTENSITY + (0.6*NL_SHADOW_INTENSITY*nightIntensity))*lit.y);
     shadow *= shade > 0.8 ? 1.0 : 0.8;
-    #if defined(NL_CLOUD_SHADOW) && (NL_CLOUD_TYPE == 1 || NL_CLOUD_TYPE == 2)
+    #if defined(NL_CLOUD_SHADOW) && (NL_CLOUD_TYPE == 1 || NL_CLOUD_TYPE == 2 || NL_CLOUD_TYPE == 3)
       vec3 mainLightDir = env.sunDir.y > 0.0 ? env.sunDir : env.moonDir;
       vec3 gPos = wPos + CAMERA_POS;
       float cloudRelativeHeight = gPos.y-187.0;
@@ -83,9 +83,15 @@ vec3 nlLighting(
         // shadow cast by simple clouds
         cmask = cloudNoise2D(projectedPos*NL_CLOUD1_SCALE, t, env.rainFactor)*cloudFade;
       #elif NL_CLOUD_TYPE == 2
-        // shadow cast by rounded clouds  
+        // shadow cast by rounded clouds
         projectedPos = NL_CLOUD2_SCALE * (projectedPos + vec2(1.0, 0.5) * (t * NL_CLOUD2_VELOCITY));
         cmask = cloudDf(vec3(projectedPos.x, 0.5, projectedPos.y), env.rainFactor, NL_CLOUD2_SHAPE)*cloudFade;
+      #elif NL_CLOUD_TYPE == 3
+        // RealFull: project the same moving Voronoi cloud field onto the terrain.
+        // The rain factor broadens cloud cover only while the game weather is rainy.
+        float cloudNoise = cloudsNoiseVr(projectedPos * NL_CLOUD3_SCALE, t * NL_CLOUD3_SPEED);
+        cloudNoise = smoothstep(0.40 - 0.10*env.rainFactor, 0.72 - 0.08*env.rainFactor, cloudNoise);
+        cmask = cloudNoise * cloudFade * NL_CLOUD3_SHADOW;
       #endif
       shadow *= 0.3 + 0.7*smoothstep(0.6, 0.0, cmask);
     #endif
