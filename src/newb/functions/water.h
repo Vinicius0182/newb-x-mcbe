@@ -48,6 +48,23 @@ vec4 nlWater(
     }
   #endif
 
+  #ifdef NL_WATER_SUN_GLINT
+    if (!env.end && !env.nether && !env.underwater) {
+      // brilho do sol refletido na agua (cintilando com as ondas)
+      vec3 rv = viewDir;
+      rv.y = -rv.y;
+      float sg = max(dot(env.sunDir, rv), 0.0);
+      float sg2 = sg*sg;
+      float sg4 = sg2*sg2;
+      float sg8 = sg4*sg4;
+      float sg16 = sg8*sg8;
+      float sg32 = sg16*sg16;
+      float sparkle = 0.6 + 0.4*bump.x;
+      float glint = sg32*sg16*sparkle*max(env.dayFactor, 0.0)*(1.0-env.rainFactor);
+      waterRefl += NL_WATER_SUN_GLINT*glint*vec3(1.0, 0.9, 0.7);
+    }
+  #endif
+
   // torch light reflection
   float tc = 0.5+0.5*sin(16.0*viewDir.x)*sin(16.0*viewDir.z);
   waterRefl += torchColor*NL_TORCHLIGHT_INTENSITY*lit.x*tc*tc;

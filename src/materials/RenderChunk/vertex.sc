@@ -2,7 +2,7 @@ $input a_color0, a_position, a_texcoord0, a_texcoord1
 #ifdef INSTANCING
   $input i_data0, i_data1, i_data2, i_data3
 #endif
-$output v_color0, v_color1, v_fog, v_refl, v_texcoord0, v_lightmapUV, v_extra, v_sunparam, v_position
+$output v_color0, v_color1, v_fog, v_refl, v_texcoord0, v_lightmapUV, v_extra
 
 #include <bgfx_shader.sh>
 #include <newb/main.sh>
@@ -121,24 +121,6 @@ void main() {
     fogColor.a = mix(fogColor.a, 1.0, min(NL_GODRAY*nlRenderGodRayIntensity(cPos, worldPos, t, uv1, relativeDist, FogColor.rgb), 1.0));
   #endif
 
-  #if defined(NL_HFOG) && defined(NL_FOG)
-    if (!(env.nether || env.end || env.underwater)) {
-      float hfog = nlRenderHeightFog(gPos.y, relativeDist);
-      #ifdef NL_HFOG_NOISE
-        // wispy patches that drift slowly
-        hfog *= 1.0 - NL_HFOG_NOISE + 2.0*NL_HFOG_NOISE*noise2D(gPos.xz*0.015 + vec2(t*0.004, t*0.0025));
-      #endif
-      fogColor.a += (1.0-fogColor.a)*clamp(hfog, 0.0, 1.0);
-      #ifdef NL_SUN_SCATTER
-        float sd = max(dot(-viewDir, env.sunDir), 0.0);
-        float sd2 = sd*sd;
-        float sd4 = sd2*sd2;
-        float sunAmt = sd4*sd4 + 0.3*sd4;
-        fogColor.rgb += (NL_SUN_SCATTER*sunAmt*hfog*(1.0-env.rainFactor)*step(0.0, env.dayFactor))*sunLightTint(env.dayFactor, env.rainFactor);
-      #endif
-    }
-  #endif
-
   if (env.nether) {
     // blend fog with void color
     fogColor.rgb = colorCorrectionInv(FogColor.rgb);
@@ -198,16 +180,6 @@ void main() {
   #endif
 
   v_extra = vec4(shade, worldPos.y, water, shimmer);
-
-  // direction of main light + strength, used by fragment for sun-facing/away shading
-  v_position = worldPos;
-  #ifdef NL_SUN_DIRECTIONAL
-    float sunStrength = smoothstep(0.0, 0.25, env.dayFactor)*(1.0-0.85*env.rainFactor);
-    sunStrength *= (env.nether || env.end || env.underwater) ? 0.0 : 1.0;
-    v_sunparam = vec4(env.sunDir, sunStrength);
-  #else
-    v_sunparam = vec4(0.0, 1.0, 0.0, 0.0);
-  #endif
   v_refl = refl;
   v_texcoord0 = uv0;
   v_lightmapUV = uv1;

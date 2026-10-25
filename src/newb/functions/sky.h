@@ -115,6 +115,14 @@ vec3 renderOverworldSky(nl_skycolor skyCol, nl_environment env, vec3 viewDir, bo
     sky *= 1.0 + 15.0*source*(1.0-env.rainFactor);
   }
 
+  #ifdef NL_SUN_HALO
+    if (!env.underwater) {
+      // halo largo (espalhamento de luz) ao redor do sol e da lua
+      float halo = (g4.x + 0.4*g4.y)*mask*(1.0-env.rainFactor);
+      sky += NL_SUN_HALO*halo*skyCol.horizon;
+    }
+  #endif
+
   #ifdef NL_RAINBOW
     if (!env.underwater) {
       float rainbowFade = 0.5 + 0.5*viewDir.y;

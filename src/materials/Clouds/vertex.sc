@@ -18,7 +18,7 @@ uniform vec4 TimeOfDay;
 uniform vec4 CameraPosition;
 
 float fog_fade(vec3 wPos) {
-  return clamp(2.0-length(wPos*vec3(NL_CLOUD_RANGE, 0.002, NL_CLOUD_RANGE)), 0.0, 1.0);
+  return clamp(2.0-length(wPos*vec3(0.005, 0.002, 0.005)), 0.0, 1.0);
 }
 
 void main() {
