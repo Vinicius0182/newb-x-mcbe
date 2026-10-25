@@ -15,16 +15,6 @@ float nlRenderFogFade(float relativeDist, vec3 FOG_COLOR, vec2 FOG_CONTROL) {
   #endif
 }
 
-// height fog: dense low, fades out with altitude, grows with distance
-float nlRenderHeightFog(float worldY, float relativeDist) {
-  #ifdef NL_HFOG
-    float h = clamp((NL_HFOG_TOP - worldY)/(NL_HFOG_TOP - NL_HFOG_BOTTOM), 0.0, 1.0);
-    return NL_HFOG*h*h*smoothstep(0.02, 0.85, relativeDist);
-  #else
-    return 0.0;
-  #endif
-}
-
 float nlRenderGodRayIntensity(vec3 cPos, vec3 worldPos, float t, vec2 uv1, float relativeDist, vec3 FOG_COLOR) {
   // offset wPos (only works upto 16 blocks)
   vec3 offset = cPos - 16.0*fract(worldPos*0.0625);

@@ -1,4 +1,4 @@
-$input v_color0, v_color1, v_fog, v_refl, v_texcoord0, v_lightmapUV, v_extra, v_sunparam, v_position
+$input v_color0, v_color1, v_fog, v_refl, v_texcoord0, v_lightmapUV, v_extra
 
 #include <bgfx_shader.sh>
 #include <newb/main.sh>
@@ -40,24 +40,6 @@ void main() {
   #endif
 
   diffuse.rgb *= color.rgb;
-
-  #if defined(NL_SUN_DIRECTIONAL) && !defined(RENDER_AS_BILLBOARDS)
-    // directional sun shading: real per-pixel face normal from screen-space derivatives.
-    // surfaces facing the sun get warm light, surfaces facing away get darker/cooler.
-    if (v_extra.b < 0.9 && v_sunparam.w > 0.0) {
-      vec3 dn = cross(dFdx(v_position), dFdy(v_position));
-      vec3 N = dn*inversesqrt(max(dot(dn, dn), 0.000001));
-      N = dot(N, v_position) > 0.0 ? -N : N; // make normal face camera
-      float ndl = dot(N, v_sunparam.xyz);
-      float facing = smoothstep(-0.15, 0.65, ndl);
-      float sunlit = smoothstep(NL_SHADOW_SKY_LOW, NL_SHADOW_SKY_HIGH, v_lightmapUV.y);
-      float away = (1.0-facing)*v_sunparam.w;
-      float toward = facing*sunlit*v_sunparam.w;
-      diffuse.rgb *= mix(vec3_splat(1.0), NL_SHADE_AWAY_COL, away);
-      diffuse.rgb *= mix(vec3_splat(1.0), NL_SUN_FACE_COL, toward);
-    }
-  #endif
-
   diffuse.rgb += glow;
 
   if (v_extra.b > 0.9) {
