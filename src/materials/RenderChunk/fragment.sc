@@ -63,7 +63,7 @@ void main() {
   #if defined(NL_CANOPY_DAPPLE) && !defined(RENDER_AS_BILLBOARDS)
     // tree shadows: patches of sun leaking through leaves, merged with the cloud shadows from vertex lighting
     if (v_extra.b < 0.9 && v_sunparam.w > 0.0) {
-      float canopy = smoothstep(0.995, 0.93, v_lightmapUV.y)*smoothstep(0.55, 0.9, v_lightmapUV.y);
+      float canopy = smoothstep(0.995, 0.93, v_lightmapUV.y)*smoothstep(0.8, 0.92, v_lightmapUV.y);
       if (canopy > 0.0) {
         highp vec3 gp = v_position + CameraPosition.xyz;
         float dp = smoothstep(0.42, 0.62, nlLeafDapple(gp, v_sunparam.xz));

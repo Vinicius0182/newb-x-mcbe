@@ -85,7 +85,7 @@ vec3 nlLighting(
     float shadow = smoothstep(NL_SHADOW_SKY_LOW, NL_SHADOW_SKY_HIGH, uv1.y);
     shadow = max(shadow, (1.0 - NL_SHADOW_INTENSITY + (0.6*NL_SHADOW_INTENSITY*nightIntensity))*lit.y);
     // Stronger local contrast while retaining detail in shaded surfaces.
-    shadow *= shade > 0.8 ? 1.0 : 0.72;
+    shadow *= shade > 0.8 ? 1.0 : 0.85;
     #if defined(NL_CLOUD_SHADOW) && (NL_CLOUD_TYPE == 1 || NL_CLOUD_TYPE == 2)
       vec3 mainLightDir = env.sunDir.y > 0.0 ? env.sunDir : env.moonDir;
       vec3 gPos = wPos + CAMERA_POS;
@@ -103,7 +103,7 @@ vec3 nlLighting(
         projectedPos = NL_CLOUD2_SCALE * (projectedPos + vec2(1.0, 0.5) * (t * NL_CLOUD2_VELOCITY));
         cmask = cloudDf(vec3(projectedPos.x, 0.5, projectedPos.y), env.rainFactor, NL_CLOUD2_SHAPE)*cloudFade;
       #endif
-      shadow *= (1.0-NL_CLOUD_SHADOW_STRENGTH) + NL_CLOUD_SHADOW_STRENGTH*smoothstep(0.6, 0.0, cmask);
+      shadow *= (1.0-NL_CLOUD_SHADOW_STRENGTH) + NL_CLOUD_SHADOW_STRENGTH*smoothstep(0.65, 0.2, cmask);
     #endif
 
     // direct light from top

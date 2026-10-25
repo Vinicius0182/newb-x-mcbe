@@ -30,25 +30,25 @@
 /* Color correction */
 #define NL_TONEMAP_TYPE 3              // 1:Exponential, 2:Reinhard, 3:Extended Reinhard, 4:ACES
 #define NL_GAMMA 1.22                  // warm cinematic contrast
-#define NL_EXPOSURE 1.12               // moderate sunlight lift
+#define NL_EXPOSURE 1.45               // moderate sunlight lift
 #define NL_SATURATION 0.8 // vivid but not neon (VV pack midtones ~1.1)
 //#define NL_TINT                      // [toggle] enable light/dark tone tinting
 #define NL_TINT_LOW  vec3(0.3,0.5,1.4) // color tint for dark tone
 #define NL_TINT_HIGH vec3(1.4,0.7,0.3) // color tint for light tone
 
 /* Grading ported from the VV pack (contrast S-curve, highlights slightly desaturated) */
-#define NL_CONTRAST 0.28        // 0.0 off ~ 0.6 strong S-curve contrast
-#define NL_HIGHLIGHT_DESAT 0.12 // 0.0 off ~ 0.4 desaturate bright areas
+#define NL_CONTRAST 0.10        // 0.0 off ~ 0.6 strong S-curve contrast
+//#define NL_HIGHLIGHT_DESAT 0.12 // 0.0 off ~ 0.4 desaturate bright areas
 
 /* Lighting */
-#define NL_SUNLIGHT_INTENSITY   4.25 // stronger direct sunlight
+#define NL_SUNLIGHT_INTENSITY   6.0 // stronger direct sunlight
 #define NL_TORCHLIGHT_INTENSITY 1.0  // 0.5 weak ~ 3.0 bright
-#define NL_SHADOW_INTENSITY     0.97 // ultra: deep, crisp shadows
-#define NL_MIN_LIGHTING_BOOST   0.85 // preserve darker shaded areas
+#define NL_SHADOW_INTENSITY     0.9 // ultra: deep, crisp shadows
+#define NL_MIN_LIGHTING_BOOST   1.3 // preserve darker shaded areas
 //#define NL_BLINKING_TORCH  // [toggle] flickering light
 #define NL_CLOUD_SHADOW      // [toggle] cloud shadow (simple clouds only)
-#define NL_CLOUD_SHADOW_STRENGTH 0.72 // 0.2 subtle ~ 0.9 very dark patches when a cloud covers the sun
-#define NL_SHADOW_AMBIENT 0.62        // 1.0 default sky fill ~ 0.3 very dark shadows (daytime only)
+#define NL_CLOUD_SHADOW_STRENGTH 0.4 // 0.2 subtle ~ 0.9 very dark patches when a cloud covers the sun
+#define NL_SHADOW_AMBIENT 0.9        // 1.0 default sky fill ~ 0.3 very dark shadows (daytime only)
 
 /* Sun shadows (approximation: uses vanilla sky-light level, there is no shadow map in RenderDragon) */
 // Sky light 15 = open sky, 14 = under one leaf/overhang. Values between LOW and HIGH blend lit->shadow.
@@ -57,12 +57,12 @@
 #define NL_SHADOW_SKY_HIGH 0.995
 #define NL_SUN_DIRECTIONAL                  // [toggle] per-pixel sun-facing / sun-away shading
 #define NL_SUN_FACE_COL    vec3(1.22,1.08,0.84) // warm light on faces toward the sun
-#define NL_SHADE_AWAY_COL  vec3(0.66,0.76,0.95) // cooler, darker faces away from the sun
+#define NL_SHADE_AWAY_COL  vec3(0.8,0.88,1.0) // cooler, darker faces away from the sun
 // sun leaking through tree canopy: per-pixel light patches that merge with cloud shadows
 #define NL_CANOPY_DAPPLE         // [toggle]
 #define NL_DAPPLE_SCALE 1.5      // 0.5 large patches ~ 3.0 tiny patches
-#define NL_DAPPLE_LIGHT 0.85     // 0.2 subtle ~ 1.5 strong sun patches under leaves
-#define NL_DAPPLE_DARK  0.30     // 0.0 off ~ 0.6 darker shade between patches
+#define NL_DAPPLE_LIGHT 0.5     // 0.2 subtle ~ 1.5 strong sun patches under leaves
+#define NL_DAPPLE_DARK  0.12     // 0.0 off ~ 0.6 darker shade between patches
 
 /* Ambient light for nether/end */
 #define NL_NETHER_AMBIENT vec3(3.0,2.16,1.89)
@@ -70,7 +70,7 @@
 
 /* Sun/moon light color */
 #define NL_DAWN_SUNLIGHT_COL   vec3(1.0,0.32,0.07)
-#define NL_NOON_SUNLIGHT_COL   vec3(1.0,0.8,0.6)
+#define NL_NOON_SUNLIGHT_COL   vec3(1.0,0.9,0.76)
 #define NL_NIGHT_MOONLIGHT_COL vec3(0.015,0.045,0.26)
 
 /* Torch colors */
@@ -81,16 +81,16 @@
 
 /* Fog */
 #define NL_FOG 1.0                // [toggle] 0.1 subtle ~ 1.0 blend with sky completely
-#define NL_MIST_DENSITY 0.18      // 0.0 no mist ~ 1.0 misty
+#define NL_MIST_DENSITY 0.08      // 0.0 no mist ~ 1.0 misty
 #define NL_RAIN_MIST_OPACITY 0.12 // [toggle] 0.04 very subtle ~ 0.5 thick rain mist blow
-#define NL_CLOUDY_FOG 0.1         // [toggle] 0.0 subtle - 0.8 dense fog clouds
+//#define NL_CLOUDY_FOG 0.1         // [toggle] 0.0 subtle - 0.8 dense fog clouds
 
 /* Height fog (like VV volumetric fog: densest at/below BOTTOM, zero at TOP) */
-#define NL_HFOG 0.45         // [toggle] 0.1 subtle ~ 0.9 thick
+#define NL_HFOG 0.2         // [toggle] 0.1 subtle ~ 0.9 thick
 #define NL_HFOG_BOTTOM 62.0  // world Y with max density
 #define NL_HFOG_TOP 125.0    // world Y where fog is gone
 #define NL_SUN_SCATTER 0.9   // [toggle] warm glow in fog when looking toward the sun
-#define NL_HFOG_NOISE 0.35   // 0.0 uniform ~ 0.6 wispy patches of fog (volumetric look)
+#define NL_HFOG_NOISE 0.25   // 0.0 uniform ~ 0.6 wispy patches of fog (volumetric look)
 
 /* Sky */
 #define NL_SKY_VOID_FACTOR     0.5
@@ -101,9 +101,9 @@
 #define NL_DAWN_ZENITH_COL   vec3(0.12,0.30,0.62)
 #define NL_DAWN_HORIZON_COL  vec3(3.0,0.75,0.28)
 #define NL_DAWN_EDGE_COL     vec3(2.2,0.9,0.5)
-#define NL_DAY_ZENITH_COL    vec3(0.17,0.48,1.12)
-#define NL_DAY_HORIZON_COL   vec3(0.62,0.90,1.05)
-#define NL_DAY_EDGE_COL      vec3(0.78,0.92,1.0)
+#define NL_DAY_ZENITH_COL    vec3(0.10,0.42,1.25)
+#define NL_DAY_HORIZON_COL   vec3(0.40,0.76,1.15)
+#define NL_DAY_EDGE_COL      vec3(0.58,0.84,1.15)
 #define NL_NIGHT_ZENITH_COL  vec3(0.006,0.03,0.14)
 #define NL_NIGHT_HORIZON_COL vec3(0.012,0.06,0.22)
 #define NL_NIGHT_EDGE_COL    vec3(0.02,0.08,0.24)
@@ -165,7 +165,7 @@
 #define NL_CLOUD1_DEPTH 1.3                // 0.0 no bump ~ 10.0 large bumps
 #define NL_CLOUD1_SPEED 0.04               // 0.0 static ~ 0.4 fast moving
 #define NL_CLOUD1_DENSITY 0.54             // 0.1 less clouds ~ 0.8 more clouds
-#define NL_CLOUD1_OPACITY 0.88              // 0.0 invisible ~ 1.0 opaque
+#define NL_CLOUD1_OPACITY 0.7              // 0.0 invisible ~ 1.0 opaque
 
 /* Rounded cloud settings */
 #define NL_CLOUD2_THICKNESS 2.1            // 0.5 slim ~ 5.0 fat
