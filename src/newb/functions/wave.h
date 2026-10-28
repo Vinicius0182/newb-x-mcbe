@@ -136,12 +136,6 @@ void nlWave(
 
   float windStrength = lit.y*(noise1D(t*0.36) + rainFactor*0.4)*(1.0-waveFade);
 
-  #ifdef NL_WIND_GUSTS
-    // rajadas: o vento alterna entre brisa leve e rajada forte
-    float gust = 0.5 + 0.5*sin(t*0.6 + 1.3*sin(t*0.17));
-    windStrength *= 1.0 + NL_WIND_GUSTS*(gust*gust*1.5 - 0.5);
-  #endif
-
   // darken farm plants bottom
   light *= isFarmPlant && !isTop ? 0.7 : 1.1;
   if (isColored && !isTreeLeaves && !isLeafLitter && uv0.y>0.214 && uv0.y<0.502 && !isRedStone) {

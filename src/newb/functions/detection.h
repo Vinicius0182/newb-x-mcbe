@@ -41,13 +41,18 @@ bool detectUnderwater(vec3 FOG_COLOR, vec2 FOG_CONTROL) {
 }
 
 float detectRain(vec3 FOG_CONTROL) {
+  #ifdef NL_NO_RAIN_MOOD
+    return 0.0; // never use the rainy sky/dimming/gray look
+  #endif
+
   // clear fogctrl.x varies with render distance (z)
   // reverse plotted as 0.5 + 1.25/k (k is renderdistance in chunks, fogctrl.z = k*16)
   vec2 clear = vec2(0.5 + 20.0/FOG_CONTROL.z, 1.0); // clear fogctrl value
   vec2 rain = vec2(0.23, 0.70); // rain fogctrl value
   vec2 factor = clamp((FOG_CONTROL.xy-clear)/(rain-clear), vec2(0.0,0.0), vec2(1.0,1.0));
   float val = factor.x*factor.y;
-  return val*val*(3.0 - 2.0*val);
+  val = val*val*(3.0 - 2.0*val);
+  return smoothstep(0.25, 0.85, val);
 }
 
 float detectDayFactor(vec3 FOG_COLOR) {

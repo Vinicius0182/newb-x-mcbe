@@ -41,6 +41,16 @@ vec3 colorCorrection(vec3 col) {
     col *= mix(NL_TINT_LOW, NL_TINT_HIGH, col);
   #endif
 
+  #ifdef NL_CONTRAST
+    col = clamp(col, 0.0, 1.0);
+    col = mix(col, col*col*(3.0-2.0*col), NL_CONTRAST);
+  #endif
+
+  #ifdef NL_HIGHLIGHT_DESAT
+    float hl = luminance(col);
+    col = mix(col, vec3_splat(hl), NL_HIGHLIGHT_DESAT*smoothstep(0.6, 1.0, hl));
+  #endif
+
   return col;
 }
 
